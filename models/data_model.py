@@ -1,31 +1,60 @@
-from sqlalchemy import Column, BigInteger, Integer, String, Float, DateTime, Text, REAL, Sequence
-from geoalchemy2 import Geometry
+from sqlalchemy import Column, BigInteger, DateTime, REAL, Text, Sequence
 
 from models.common_db import Base
 
 
-class LosAngelesEpa(Base):
-    __tablename__='los_angeles_epa_air_quality_2019'
-    __table_args__ = {'schema' : 'air_quality_data'}
+class DarkSkyTemplate(object):
+    __table_args__ = {'schema': 'auxiliary_data'}
 
-    uid_seq = Sequence('los_angeles_epa_air_quality_2019_uid_seq')
-    uid = Column(BigInteger, primary_key=True, nullable=False,
-                 server_default=uid_seq.next_value())
-    station_id = Column(Integer, nullable=False)
-    date_observed = Column(DateTime, nullable=False)
-    parameter_name = Column(String(10), nullable=False)
-    concentration = Column(REAL, nullable=False)
-    unit = Column(Text)
-    aqi = Column(REAL,  nullable=False)
-    category_number = Column(Integer)
+    summary = Column(Text)
+    icon = Column(Text)
+    precip_intensity = Column(REAL)
+    precip_probability = Column(REAL)
+    temperature = Column(REAL)
+    apparent_temperature = Column(REAL)
+    dew_point = Column(REAL)
+    humidity = Column(REAL)
+    pressure = Column(REAL)
+    wind_speed = Column(REAL)
+    wind_bearing = Column(REAL)
+    cloud_cover = Column(REAL)
+    uv_index = Column(REAL)
+    visibility = Column(REAL)
+    ozone = Column(REAL)
 
 
-class LosAngelesEpaLocation(Base):
-    __tablename__='los_angeles_epa_sensor_locations'
-    __table_args__ = {'schema' : 'air_quality_data'}
+class LosAngeles5000mGridMeoDarkSky2018(DarkSkyTemplate, Base):
+    __tablename__ = 'los_angeles_5000m_grid_meo_darksky_2018'
 
-    station_id = Column(BigInteger, nullable=False, primary_key=True)
-    lon = Column(Float(53), nullable=False)
-    lat = Column(Float(53), nullable=False)
-    location = Column(Geometry('POINT', srid=4326), nullable=False)
-    elevation = Column(Float(53), nullable=False)
+    uid_seq = Sequence('los_angeles_5000m_grid_meo_darksky_2018_uid_seq')
+    uid = Column(BigInteger, primary_key=True, nullable=False, server_default=uid_seq.next_value())
+    gid = Column(BigInteger, nullable=False)
+    timestamp = Column(DateTime, nullable=False)
+
+
+"""
+Create Darksky Table template
+
+DROP TABLE IF EXISTS auxiliary_data.los_angeles_5000m_grid_meo_darksky_2018;
+CREATE TABLE auxiliary_data.los_angeles_5000m_grid_meo_darksky_2018 (
+    uid BIGSERIAL PRIMARY KEY,
+    gid integer NOT NULL,
+    timestamp timestamp with time zone NOT NULL,
+    summary text,
+    icon text,
+    precip_intensity real,
+    precip_probability real,
+    temperature real,
+    apparent_temperature real,
+    dew_point real,
+    humidity real,
+    pressure real,
+    wind_speed real,
+    wind_bearing real,
+    uv_index integer,
+    visibility real,
+    ozone real,
+);
+
+
+"""
