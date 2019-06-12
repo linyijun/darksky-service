@@ -1,7 +1,7 @@
-from sqlalchemy import Column, String, Float, BigInteger
+from sqlalchemy import Column, Float, BigInteger
 from geoalchemy2 import Geometry
 
-from models.common_db import Base
+from utils.common_db import Base
 
 
 class GridTemplate(object):

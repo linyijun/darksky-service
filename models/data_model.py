@@ -1,6 +1,6 @@
 from sqlalchemy import Column, BigInteger, DateTime, REAL, Text, Sequence
 
-from models.common_db import Base
+from utils.common_db import Base
 
 
 class DarkSkyTemplate(object):

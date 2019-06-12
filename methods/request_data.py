@@ -1,7 +1,7 @@
 import json
 import requests
 
-from models.common_db import session
+from utils.common_db import session
 
 
 def request_darksky_data(option):

@@ -1,7 +1,7 @@
 import time
 
 from methods.request_data import request_darksky_data
-from models.common_db import session
+from utils.common_db import session
 
 
 def one_time_request(lon, lat, timestamp, config):
