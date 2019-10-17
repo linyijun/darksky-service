@@ -106,5 +106,5 @@ venv.bak/
 .idea
 
 # self-define
-constant.py
+/constant.py
 /data_models/common_db.py
