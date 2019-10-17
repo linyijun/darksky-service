@@ -7,8 +7,8 @@ class DarkSkyTemplate(object):
     __table_args__ = {'schema': 'auxiliary_data'}
 
     uid = Column(BigInteger, primary_key=True, autoincrement=True)
-    gid = Column(BigInteger, nullable=False)
-    timestamp = Column(DateTime, nullable=False)
+    gid = Column(BigInteger, nullable=False, index=True)
+    timestamp = Column(DateTime(timezone=True), nullable=False, index=True)
     summary = Column(Text)
     icon = Column(Text)
     precip_intensity = Column(REAL)

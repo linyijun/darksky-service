@@ -55,6 +55,6 @@ def multiple_times_request(time_list, loc_dict, config):
             if data:
                 data['gid'], data['timestamp'] = loc, timestamp
                 dk_data.append(data)
-        insert_new_data(dk_data, config['DARKSKY_TABLE'])
+        insert_new_data(dk_data, config['DARKSKY_OBJ'])
         time.sleep(60)
 
