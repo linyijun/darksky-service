@@ -104,3 +104,7 @@ venv.bak/
 .mypy_cache/
 
 .idea
+
+# self-define
+constant.py
+/data_models/common_db.py

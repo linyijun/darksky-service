@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Float, BigInteger
 from geoalchemy2 import Geometry
 
-from utils.common_db import Base
+from data_models.common_db import Base
 
 
 class GridTemplate(object):
@@ -16,3 +16,7 @@ class GridTemplate(object):
 
 class LosAngeles5000mGrid(GridTemplate, Base):
     __tablename__ = 'los_angeles_5000m_grid'
+
+
+class SalkLakeCity5000mGrid(GridTemplate, Base):
+    __tablename__ = 'salt_lake_city_5000m_grid'

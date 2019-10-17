@@ -1,7 +1,24 @@
 import time
+import json
+import requests
 
-from methods.request_data import request_darksky_data
-from utils.common_db import session
+from methods.db_ops import *
+
+
+def request_darksky_data(option):
+
+    url = 'https://api.darksky.net/forecast/{api_key}/{lat},{lon},{timestamp}?' \
+          'exclude=[minutely,hourly,daily,alerts,flags]' \
+        .format(lat=option['lat'], lon=option['lon'], timestamp=option['timestamp'], api_key=option['api_key'])
+
+    try:
+        raw_data = requests.get(url)
+        json_data = json.loads(raw_data.text)
+        data = json_data.get('currently')
+        return {'status': 1, 'msg': '', 'data': data}
+
+    except Exception as e:
+        return {'status': -1, 'msg': 'Request Darksky API Failed: {}'.format(e), 'data': {}}
 
 
 def one_time_request(lon, lat, timestamp, config):
@@ -21,7 +38,7 @@ def one_time_request(lon, lat, timestamp, config):
         else:
             bad_msg = data['msg']
             time.sleep(30)
-            print('Retry requesting ({},{}) @{}: {}'.format(lon, lat, timestamp, i))
+            print('Retry requesting ({},{}) @{}: No. {} Time.'.format(lon, lat, timestamp, i))
             continue
 
     print(bad_msg)
@@ -41,25 +58,3 @@ def multiple_times_request(time_list, loc_dict, config):
         insert_new_data(dk_data, config['DARKSKY_TABLE'])
         time.sleep(60)
 
-
-def insert_new_data(data, darksky_obj):
-    for item in data:
-        obj = darksky_obj(gid=item['gid'],
-                          timestamp=item['timestamp'],
-                          summary=item.get('summary'),
-                          icon=item.get('icon'),
-                          precip_intensity=item.get('precipIntensity'),
-                          precip_probability=item.get('precipProbability'),
-                          temperature=item.get('temperature'),
-                          apparent_temperature=item.get('apparentTemperature'),
-                          dew_point=item.get('dewPoint'),
-                          humidity=item.get('humidity'),
-                          pressure=item.get('pressure'),
-                          wind_speed=item.get('windSpeed'),
-                          wind_bearing=item.get('windBearing'),
-                          cloud_cover=item.get('cloudCover'),
-                          uv_index=item.get('uvIndex'),
-                          visibility=item.get('visibility'),
-                          ozone=item.get('ozone'))
-        session.add(obj)
-        session.commit()
